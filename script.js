@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const url = 'https://username.github.io/newswarup/storage/posts.json'; // Replace with your actual URL
+    const url = 'https://swarup2024web.github.io/newswarup/storage/posts.json'; // Replace with your actual URL
     const searchBar = document.getElementById('search-bar');
     const postsContainer = document.getElementById('posts-container');
     const prevPageButton = document.getElementById('prev-page');
