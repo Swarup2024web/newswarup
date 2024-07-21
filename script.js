@@ -6,9 +6,15 @@ document.addEventListener("DOMContentLoaded", function() {
     function truncateText(text, wordLimit) {
         const words = text.split(' ');
         if (words.length > wordLimit) {
-            return words.slice(0, wordLimit).join(' ') + '...';
+            return {
+                truncated: words.slice(0, wordLimit).join(' ') + '...',
+                isTruncated: true
+            };
         }
-        return text;
+        return {
+            truncated: text,
+            isTruncated: false
+        };
     }
 
     function displayPosts() {
@@ -34,23 +40,27 @@ document.addEventListener("DOMContentLoaded", function() {
             postClass.className = 'post-class';
             postClass.textContent = `Class: ${post.class}`;
 
+            const truncatedContent = truncateText(post.content, 30);
             const postContent = document.createElement('div');
             postContent.className = 'post-content';
-            postContent.innerHTML = truncateText(post.content, 30);
-
-            const readMoreButton = document.createElement('span');
-            readMoreButton.className = 'read-more';
-            readMoreButton.textContent = 'Read more';
-            readMoreButton.setAttribute('data-index', start + index);
-            readMoreButton.addEventListener('click', function() {
-                showModal(post.content);
-            });
+            postContent.innerHTML = truncatedContent.truncated;
 
             postElement.appendChild(postTitle);
             postElement.appendChild(postSubject);
             postElement.appendChild(postClass);
             postElement.appendChild(postContent);
-            postElement.appendChild(readMoreButton);
+
+            if (truncatedContent.isTruncated) {
+                const readMoreButton = document.createElement('span');
+                readMoreButton.className = 'read-more';
+                readMoreButton.textContent = 'Read more';
+                readMoreButton.setAttribute('data-index', start + index);
+                readMoreButton.addEventListener('click', function() {
+                    showModal(post.content);
+                });
+                postElement.appendChild(readMoreButton);
+            }
+
             postsContainer.appendChild(postElement);
         });
 
@@ -90,11 +100,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    fetch('storage/posts.json')
-        .then(response => response.json())
-        .then(data => {
-            posts = data;
-            displayPosts();
-        })
-        .catch(error => console.error('Error fetching posts:', error));
+    const fetchData = () => {
+        fetch('storage/posts.json')
+            .then(response => response.json())
+            .then(data => {
+                posts = data;
+                displayPosts();
+            })
+            .catch(error => console.error('Error fetching posts:', error));
+    }
+
+    fetchData();
 });
