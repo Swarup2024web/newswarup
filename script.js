@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const posts = [
-        // Your posts data
-    ];
-
+    let posts = [];
     let currentPage = 1;
     const postsPerPage = 10;
 
@@ -30,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             const postDate = document.createElement('div');
             postDate.className = 'date';
-            postDate.textContent = post.date;
+            postDate.textContent = `Subject: ${post.subject}, Class: ${post.class}`;
 
             const postContent = document.createElement('div');
             postContent.className = 'content';
@@ -87,5 +84,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    displayPosts();
+    fetch('storage/posts.json')
+        .then(response => response.json())
+        .then(data => {
+            posts = data;
+            displayPosts();
+        })
+        .catch(error => console.error('Error fetching posts:', error));
 });
