@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     let posts = [];
+    let filteredPosts = [];
     let currentPage = 1;
     const postsPerPage = 10;
 
@@ -22,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
         postsContainer.innerHTML = '';
         const start = (currentPage - 1) * postsPerPage;
         const end = start + postsPerPage;
-        const currentPosts = posts.slice(start, end);
+        const currentPosts = filteredPosts.slice(start, end);
 
         currentPosts.forEach((post, index) => {
             const postElement = document.createElement('div');
@@ -81,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const paginationContainer = document.getElementById('pagination');
         paginationContainer.innerHTML = '';
 
-        const totalPages = Math.ceil(posts.length / postsPerPage);
+        const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
         if (totalPages > 1) {
             for (let i = 1; i <= totalPages; i++) {
@@ -97,30 +98,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
                 paginationContainer.appendChild(pageButton);
             }
-
-            const prevButton = document.createElement('button');
-            prevButton.textContent = 'Previous';
-            prevButton.id = 'prev-page';
-            prevButton.disabled = currentPage === 1;
-            prevButton.addEventListener('click', function() {
-                if (currentPage > 1) {
-                    currentPage--;
-                    displayPosts();
-                }
-            });
-            paginationContainer.insertBefore(prevButton, paginationContainer.firstChild);
-
-            const nextButton = document.createElement('button');
-            nextButton.textContent = 'Next';
-            nextButton.id = 'next-page';
-            nextButton.disabled = currentPage === totalPages;
-            nextButton.addEventListener('click', function() {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    displayPosts();
-                }
-            });
-            paginationContainer.appendChild(nextButton);
         }
     }
 
@@ -142,11 +119,25 @@ document.addEventListener("DOMContentLoaded", function() {
         };
     }
 
+    function filterPosts(query) {
+        filteredPosts = posts.filter(post => 
+            post.title.toLowerCase().includes(query.toLowerCase()) || 
+            post.content.toLowerCase().includes(query.toLowerCase())
+        );
+        currentPage = 1; // Reset to first page
+        displayPosts();
+    }
+
+    document.getElementById('search-bar').addEventListener('input', function(event) {
+        filterPosts(event.target.value);
+    });
+
     // Fetch posts data from the JSON file
     fetch('storage/posts.json')
         .then(response => response.json())
         .then(data => {
             posts = data;
+            filteredPosts = posts; // Initialize filteredPosts with all posts
             displayPosts();
         })
         .catch(error => console.error('Error fetching posts:', error));
