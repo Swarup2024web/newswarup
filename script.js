@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     let posts = [];
-    let currentPage = parseInt(localStorage.getItem('currentPage')) || 1;
+    let currentPage = 1;
     const postsPerPage = 10;
 
     function truncateText(text, wordLimit) {
@@ -78,46 +78,49 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function updatePagination() {
-        const pagination = document.getElementById('pagination');
-        pagination.innerHTML = '';
+        const paginationContainer = document.getElementById('pagination');
+        paginationContainer.innerHTML = '';
 
         const totalPages = Math.ceil(posts.length / postsPerPage);
-        const createButton = (page) => {
-            const button = document.createElement('button');
-            button.textContent = page;
-            button.className = (page === currentPage) ? 'active' : '';
-            button.addEventListener('click', function() {
-                currentPage = page;
-                localStorage.setItem('currentPage', currentPage);
-                displayPosts();
-            });
-            return button;
-        };
 
-        if (currentPage > 1) {
-            const prevButton = createButton(currentPage - 1);
+        if (totalPages > 1) {
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.className = 'page-button';
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pageButton.addEventListener('click', function() {
+                    currentPage = i;
+                    displayPosts();
+                });
+                paginationContainer.appendChild(pageButton);
+            }
+
+            const prevButton = document.createElement('button');
             prevButton.textContent = 'Previous';
+            prevButton.id = 'prev-page';
+            prevButton.disabled = currentPage === 1;
             prevButton.addEventListener('click', function() {
-                currentPage--;
-                localStorage.setItem('currentPage', currentPage);
-                displayPosts();
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayPosts();
+                }
             });
-            pagination.appendChild(prevButton);
-        }
+            paginationContainer.insertBefore(prevButton, paginationContainer.firstChild);
 
-        for (let i = 1; i <= totalPages; i++) {
-            pagination.appendChild(createButton(i));
-        }
-
-        if (currentPage < totalPages) {
-            const nextButton = createButton(currentPage + 1);
+            const nextButton = document.createElement('button');
             nextButton.textContent = 'Next';
+            nextButton.id = 'next-page';
+            nextButton.disabled = currentPage === totalPages;
             nextButton.addEventListener('click', function() {
-                currentPage++;
-                localStorage.setItem('currentPage', currentPage);
-                displayPosts();
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayPosts();
+                }
             });
-            pagination.appendChild(nextButton);
+            paginationContainer.appendChild(nextButton);
         }
     }
 
@@ -139,18 +142,6 @@ document.addEventListener("DOMContentLoaded", function() {
         };
     }
 
-    // Initialize pagination and posts
-    document.getElementById('pagination').addEventListener('click', function(event) {
-        if (event.target.tagName === 'BUTTON') {
-            const page = parseInt(event.target.textContent);
-            if (!isNaN(page)) {
-                currentPage = page;
-                localStorage.setItem('currentPage', currentPage);
-                displayPosts();
-            }
-        }
-    });
-
     // Fetch posts data from the JSON file
     fetch('storage/posts.json')
         .then(response => response.json())
@@ -158,8 +149,5 @@ document.addEventListener("DOMContentLoaded", function() {
             posts = data;
             displayPosts();
         })
-        .catch(error => {
-            console.error('Error fetching posts:', error);
-            document.getElementById('posts-container').innerHTML = '<p>Failed to load posts. Please try again later.</p>';
-        });
+        .catch(error => console.error('Error fetching posts:', error));
 });
