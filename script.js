@@ -43,7 +43,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
             const postSubjectClass = document.createElement('div');
             postSubjectClass.className = 'post-subject-class';
-            postSubjectClass.innerHTML = `<span class="post-subject">Subject: ${post.subject}</span> &bull; <span class="post-class">Class: ${post.class}</span>`;
+
+            const postSubject = document.createElement('div');
+            postSubject.className = 'post-subject';
+            postSubject.textContent = `Subject: ${post.subject}`;
+
+            const postClass = document.createElement('div');
+            postClass.className = 'post-class';
+            postClass.textContent = `Class: ${post.class}`;
+
+            postSubjectClass.appendChild(postSubject);
+            postSubjectClass.appendChild(document.createTextNode(' • '));
+            postSubjectClass.appendChild(postClass);
 
             postHeader.appendChild(postTitle);
             postHeader.appendChild(postSubjectClass);
@@ -67,7 +78,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
             postContentContainer.appendChild(postContent);
             postContentContainer.appendChild(readMoreLink);
-
             postElement.appendChild(postHeader);
             postElement.appendChild(postContentContainer);
 
@@ -82,24 +92,18 @@ document.addEventListener("DOMContentLoaded", function() {
         pagination.innerHTML = '';
         const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
-        if (currentPage > 1) {
-            const prevButton = document.createElement('button');
-            prevButton.textContent = 'Previous';
-            prevButton.addEventListener('click', function() {
-                currentPage--;
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.textContent = i;
+            if (i === currentPage) {
+                button.disabled = true;
+                button.classList.add('active');
+            }
+            button.addEventListener('click', function() {
+                currentPage = i;
                 displayPosts();
             });
-            pagination.appendChild(prevButton);
-        }
-
-        if (currentPage < totalPages) {
-            const nextButton = document.createElement('button');
-            nextButton.textContent = 'Next';
-            nextButton.addEventListener('click', function() {
-                currentPage++;
-                displayPosts();
-            });
-            pagination.appendChild(nextButton);
+            pagination.appendChild(button);
         }
     }
 
@@ -115,22 +119,33 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
 
         modal.classList.add('show');
-        document.querySelectorAll('.close').forEach(closeBtn => {
-            closeBtn.addEventListener('click', function() {
-                modal.classList.remove('show');
-            });
+        document.querySelector('.close').addEventListener('click', function() {
+            modal.classList.remove('show');
         });
     }
 
     function filterPosts() {
         const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+        const selectedSubject = document.getElementById('filter-subject').value;
+        const selectedClass = document.getElementById('filter-class').value;
 
         filteredPosts = posts.filter(post => {
-            return post.title.toLowerCase().includes(searchQuery) ||
-                   post.content.toLowerCase().includes(searchQuery);
+            const matchesSearch = post.title.toLowerCase().includes(searchQuery) ||
+                                  post.content.toLowerCase().includes(searchQuery);
+            const matchesSubject = selectedSubject === '' || post.subject === selectedSubject;
+            const matchesClass = selectedClass === '' || post.class === selectedClass;
+            return matchesSearch && matchesSubject && matchesClass;
         });
         currentPage = 1; // Reset to first page
         displayPosts();
+    }
+
+    function setupFilters() {
+        const subjectFilter = document.getElementById('filter-subject');
+        const classFilter = document.getElementById('filter-class');
+
+        subjectFilter.addEventListener('change', filterPosts);
+        classFilter.addEventListener('change', filterPosts);
     }
 
     document.getElementById('search-bar').addEventListener('input', filterPosts);
@@ -150,16 +165,24 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => console.error('Error fetching posts:', error));
 
-    // Profile icon modal functionality
-    document.getElementById('profile-icon').addEventListener('click', function() {
-        const profileModal = document.getElementById('profile-modal');
+    setupFilters();
+
+    // Profile icon modal
+    const profileIcon = document.getElementById('profile-icon');
+    const profileModal = document.getElementById('profile-modal');
+    const profileClose = document.getElementById('profile-close');
+
+    profileIcon.addEventListener('click', function() {
         profileModal.classList.add('show');
     });
 
-    document.querySelectorAll('.close').forEach(closeBtn => {
-        closeBtn.addEventListener('click', function() {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => modal.classList.remove('show'));
-        });
+    profileClose.addEventListener('click', function() {
+        profileModal.classList.remove('show');
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target === profileModal) {
+            profileModal.classList.remove('show');
+        }
     });
 });
