@@ -38,6 +38,16 @@ header nav a:hover {
 main .container {
     width: 80%;
     margin: 20px auto;
+    position: relative; /* Required for the search bar */
+}
+
+#search-bar {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Rounded corners */
+    margin-bottom: 20px; /* Space between search bar and posts */
+    font-size: 16px;
 }
 
 .post {
