@@ -4,7 +4,6 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-    padding-bottom: 60px; /* Make room for the fixed footer */
 }
 
 header {
@@ -109,15 +108,4 @@ main .container {
 #pagination button:disabled {
     background: #aaa;
     cursor: not-allowed;
-}
-
-footer {
-    background: #333;
-    color: #fff;
-    padding: 1em 0;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
 }
