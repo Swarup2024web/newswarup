@@ -22,15 +22,20 @@ document.addEventListener("DOMContentLoaded", function() {
             const postElement = document.createElement('div');
             postElement.className = 'post';
 
-            const postTitle = document.createElement('h2');
+            const postTitle = document.createElement('div');
+            postTitle.className = 'post-title';
             postTitle.textContent = post.title;
 
-            const postDate = document.createElement('div');
-            postDate.className = 'date';
-            postDate.textContent = `Subject: ${post.subject}, Class: ${post.class}`;
+            const postSubject = document.createElement('div');
+            postSubject.className = 'post-subject';
+            postSubject.textContent = `Subject: ${post.subject}`;
+
+            const postClass = document.createElement('div');
+            postClass.className = 'post-class';
+            postClass.textContent = `Class: ${post.class}`;
 
             const postContent = document.createElement('div');
-            postContent.className = 'content';
+            postContent.className = 'post-content';
             postContent.innerHTML = truncateText(post.content, 30);
 
             const readMoreButton = document.createElement('span');
@@ -42,7 +47,8 @@ document.addEventListener("DOMContentLoaded", function() {
             });
 
             postElement.appendChild(postTitle);
-            postElement.appendChild(postDate);
+            postElement.appendChild(postSubject);
+            postElement.appendChild(postClass);
             postElement.appendChild(postContent);
             postElement.appendChild(readMoreButton);
             postsContainer.appendChild(postElement);
