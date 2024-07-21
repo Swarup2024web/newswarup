@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     let posts = [];
-    let currentPage = 1;
+    let currentPage = parseInt(localStorage.getItem('currentPage')) || 1;
     const postsPerPage = 10;
 
     function truncateText(text, wordLimit) {
@@ -74,8 +74,51 @@ document.addEventListener("DOMContentLoaded", function() {
             postsContainer.appendChild(postElement);
         });
 
-        document.getElementById('prev-page').disabled = currentPage === 1;
-        document.getElementById('next-page').disabled = end >= posts.length;
+        updatePagination();
+    }
+
+    function updatePagination() {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+
+        const totalPages = Math.ceil(posts.length / postsPerPage);
+        const createButton = (page) => {
+            const button = document.createElement('button');
+            button.textContent = page;
+            button.className = (page === currentPage) ? 'active' : '';
+            button.addEventListener('click', function() {
+                currentPage = page;
+                localStorage.setItem('currentPage', currentPage);
+                displayPosts();
+            });
+            return button;
+        };
+
+        if (currentPage > 1) {
+            const prevButton = createButton(currentPage - 1);
+            prevButton.textContent = 'Previous';
+            prevButton.addEventListener('click', function() {
+                currentPage--;
+                localStorage.setItem('currentPage', currentPage);
+                displayPosts();
+            });
+            pagination.appendChild(prevButton);
+        }
+
+        for (let i = 1; i <= totalPages; i++) {
+            pagination.appendChild(createButton(i));
+        }
+
+        if (currentPage < totalPages) {
+            const nextButton = createButton(currentPage + 1);
+            nextButton.textContent = 'Next';
+            nextButton.addEventListener('click', function() {
+                currentPage++;
+                localStorage.setItem('currentPage', currentPage);
+                displayPosts();
+            });
+            pagination.appendChild(nextButton);
+        }
     }
 
     function showModal(content) {
@@ -96,17 +139,15 @@ document.addEventListener("DOMContentLoaded", function() {
         };
     }
 
-    document.getElementById('prev-page').addEventListener('click', function() {
-        if (currentPage > 1) {
-            currentPage--;
-            displayPosts();
-        }
-    });
-
-    document.getElementById('next-page').addEventListener('click', function() {
-        if ((currentPage * postsPerPage) < posts.length) {
-            currentPage++;
-            displayPosts();
+    // Initialize pagination and posts
+    document.getElementById('pagination').addEventListener('click', function(event) {
+        if (event.target.tagName === 'BUTTON') {
+            const page = parseInt(event.target.textContent);
+            if (!isNaN(page)) {
+                currentPage = page;
+                localStorage.setItem('currentPage', currentPage);
+                displayPosts();
+            }
         }
     });
 
@@ -117,5 +158,8 @@ document.addEventListener("DOMContentLoaded", function() {
             posts = data;
             displayPosts();
         })
-        .catch(error => console.error('Error fetching posts:', error));
+        .catch(error => {
+            console.error('Error fetching posts:', error);
+            document.getElementById('posts-container').innerHTML = '<p>Failed to load posts. Please try again later.</p>';
+        });
 });
