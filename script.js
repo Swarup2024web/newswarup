@@ -41,17 +41,12 @@ document.addEventListener("DOMContentLoaded", function() {
             postTitle.className = 'post-title';
             postTitle.textContent = post.title;
 
-            const postSubject = document.createElement('div');
-            postSubject.className = 'post-subject';
-            postSubject.textContent = `Subject: ${post.subject}`;
-
-            const postClass = document.createElement('div');
-            postClass.className = 'post-class';
-            postClass.textContent = `Class: ${post.class}`;
+            const postSubjectClass = document.createElement('div');
+            postSubjectClass.className = 'post-subject-class';
+            postSubjectClass.innerHTML = `<span class="post-subject">Subject: ${post.subject}</span> &bull; <span class="post-class">Class: ${post.class}</span>`;
 
             postHeader.appendChild(postTitle);
-            postHeader.appendChild(postSubject);
-            postHeader.appendChild(postClass);
+            postHeader.appendChild(postSubjectClass);
 
             const postContentContainer = document.createElement('div');
             postContentContainer.className = 'post-content-container';
@@ -87,39 +82,24 @@ document.addEventListener("DOMContentLoaded", function() {
         pagination.innerHTML = '';
         const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
-        for (let i = 1; i <= totalPages; i++) {
-            const button = document.createElement('button');
-            button.textContent = i;
-            button.className = i === currentPage ? 'active' : '';
-            button.addEventListener('click', function() {
-                currentPage = i;
-                displayPosts();
-            });
-            pagination.appendChild(button);
-        }
-
-        // Disable previous button if on first page
-        const prevButton = document.getElementById('prev-button');
-        if (currentPage === 1) {
-            prevButton.setAttribute('disabled', 'true');
-        } else {
-            prevButton.removeAttribute('disabled');
+        if (currentPage > 1) {
+            const prevButton = document.createElement('button');
+            prevButton.textContent = 'Previous';
             prevButton.addEventListener('click', function() {
                 currentPage--;
                 displayPosts();
             });
+            pagination.appendChild(prevButton);
         }
 
-        // Disable next button if on last page
-        const nextButton = document.getElementById('next-button');
-        if (currentPage === totalPages) {
-            nextButton.setAttribute('disabled', 'true');
-        } else {
-            nextButton.removeAttribute('disabled');
+        if (currentPage < totalPages) {
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Next';
             nextButton.addEventListener('click', function() {
                 currentPage++;
                 displayPosts();
             });
+            pagination.appendChild(nextButton);
         }
     }
 
@@ -144,26 +124,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function filterPosts() {
         const searchQuery = document.getElementById('search-bar').value.toLowerCase();
-        const selectedSubject = document.getElementById('filter-subject').value;
-        const selectedClass = document.getElementById('filter-class').value;
 
         filteredPosts = posts.filter(post => {
-            const matchesSearch = post.title.toLowerCase().includes(searchQuery) ||
-                                  post.content.toLowerCase().includes(searchQuery);
-            const matchesSubject = selectedSubject === '' || post.subject === selectedSubject;
-            const matchesClass = selectedClass === '' || post.class === selectedClass;
-            return matchesSearch && matchesSubject && matchesClass;
+            return post.title.toLowerCase().includes(searchQuery) ||
+                   post.content.toLowerCase().includes(searchQuery);
         });
         currentPage = 1; // Reset to first page
         displayPosts();
-    }
-
-    function setupFilters() {
-        const subjectFilter = document.getElementById('filter-subject');
-        const classFilter = document.getElementById('filter-class');
-
-        subjectFilter.addEventListener('change', filterPosts);
-        classFilter.addEventListener('change', filterPosts);
     }
 
     document.getElementById('search-bar').addEventListener('input', filterPosts);
@@ -183,19 +150,16 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => console.error('Error fetching posts:', error));
 
-    setupFilters();
-
-    // Profile icon popup
-    const profileIcon = document.getElementById('profile-icon');
-    const profileModal = document.getElementById('profile-modal');
-
-    profileIcon.addEventListener('click', function() {
+    // Profile icon modal functionality
+    document.getElementById('profile-icon').addEventListener('click', function() {
+        const profileModal = document.getElementById('profile-modal');
         profileModal.classList.add('show');
     });
 
     document.querySelectorAll('.close').forEach(closeBtn => {
         closeBtn.addEventListener('click', function() {
-            profileModal.classList.remove('show');
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => modal.classList.remove('show'));
         });
     });
 });
