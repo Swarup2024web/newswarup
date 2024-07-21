@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SWARUP SIR</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <header>
@@ -24,11 +24,23 @@
                 <input type="text" id="search-bar" placeholder="Search posts...">
                 <i class="fa fa-search"></i>
             </div>
+            <div class="filters">
+                <label for="filter-subject">Subject:</label>
+                <select id="filter-subject">
+                    <option value="">All Subjects</option>
+                    <!-- Add dynamic options here -->
+                </select>
+                <label for="filter-class">Class:</label>
+                <select id="filter-class">
+                    <option value="">All Classes</option>
+                    <!-- Add dynamic options here -->
+                </select>
+            </div>
             <div id="posts-container">
                 <!-- Posts will be injected here by JavaScript -->
             </div>
             <div id="pagination">
-                <!-- Pagination buttons will be dynamically generated here by JavaScript -->
+                <!-- Pagination buttons will be injected here by JavaScript -->
             </div>
         </div>
     </main>
