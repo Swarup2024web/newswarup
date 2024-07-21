@@ -41,17 +41,12 @@ document.addEventListener("DOMContentLoaded", function() {
             postTitle.className = 'post-title';
             postTitle.textContent = post.title;
 
-            const postSubject = document.createElement('div');
-            postSubject.className = 'post-subject';
-            postSubject.textContent = `Subject: ${post.subject}`;
-
-            const postClass = document.createElement('div');
-            postClass.className = 'post-class';
-            postClass.textContent = `Class: ${post.class}`;
+            const postSubjectClass = document.createElement('div');
+            postSubjectClass.className = 'post-subject-class';
+            postSubjectClass.textContent = `Subject: ${post.subject} • Class: ${post.class}`;
 
             postHeader.appendChild(postTitle);
-            postHeader.appendChild(postSubject);
-            postHeader.appendChild(postClass);
+            postHeader.appendChild(postSubjectClass);
 
             const postContentContainer = document.createElement('div');
             postContentContainer.className = 'post-content-container';
@@ -79,24 +74,29 @@ document.addEventListener("DOMContentLoaded", function() {
             postsContainer.appendChild(postElement);
         });
 
-        updatePagination();
+        updateNavigation();
     }
 
-    function updatePagination() {
-        const pagination = document.getElementById('pagination');
-        pagination.innerHTML = '';
-        const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+    function updateNavigation() {
+        const prevButton = document.getElementById('prev-page');
+        const nextButton = document.getElementById('next-page');
 
-        for (let i = 1; i <= totalPages; i++) {
-            const button = document.createElement('button');
-            button.textContent = i;
-            button.className = i === currentPage ? 'active' : '';
-            button.addEventListener('click', function() {
-                currentPage = i;
+        prevButton.disabled = currentPage === 1;
+        nextButton.disabled = currentPage === Math.ceil(filteredPosts.length / postsPerPage);
+
+        prevButton.addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
                 displayPosts();
-            });
-            pagination.appendChild(button);
-        }
+            }
+        });
+
+        nextButton.addEventListener('click', function() {
+            if (currentPage < Math.ceil(filteredPosts.length / postsPerPage)) {
+                currentPage++;
+                displayPosts();
+            }
+        });
     }
 
     function showModal(post) {
@@ -116,31 +116,25 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    function filterPosts() {
-        const searchQuery = document.getElementById('search-bar').value.toLowerCase();
-        const selectedSubject = document.getElementById('filter-subject').value;
-        const selectedClass = document.getElementById('filter-class').value;
-
-        filteredPosts = posts.filter(post => {
-            const matchesSearch = post.title.toLowerCase().includes(searchQuery) ||
-                                  post.content.toLowerCase().includes(searchQuery);
-            const matchesSubject = selectedSubject === '' || post.subject === selectedSubject;
-            const matchesClass = selectedClass === '' || post.class === selectedClass;
-            return matchesSearch && matchesSubject && matchesClass;
+    function showProfileModal() {
+        const modal = document.getElementById('profile-modal');
+        modal.classList.add('show');
+        document.querySelector('.close').addEventListener('click', function() {
+            modal.classList.remove('show');
         });
+    }
+
+    document.getElementById('profile-icon').addEventListener('click', showProfileModal);
+
+    document.getElementById('search-bar').addEventListener('input', function() {
+        const searchQuery = this.value.toLowerCase();
+        filteredPosts = posts.filter(post => 
+            post.title.toLowerCase().includes(searchQuery) ||
+            post.content.toLowerCase().includes(searchQuery)
+        );
         currentPage = 1; // Reset to first page
         displayPosts();
-    }
-
-    function setupFilters() {
-        const subjectFilter = document.getElementById('filter-subject');
-        const classFilter = document.getElementById('filter-class');
-
-        subjectFilter.addEventListener('change', filterPosts);
-        classFilter.addEventListener('change', filterPosts);
-    }
-
-    document.getElementById('search-bar').addEventListener('input', filterPosts);
+    });
 
     // Fetch posts data from the JSON file
     fetch('storage/posts.json')
@@ -156,6 +150,4 @@ document.addEventListener("DOMContentLoaded", function() {
             displayPosts();
         })
         .catch(error => console.error('Error fetching posts:', error));
-
-    setupFilters();
 });
