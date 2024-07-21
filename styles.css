@@ -38,7 +38,7 @@ header nav a:hover {
 main .container {
     width: 80%;
     margin: 20px auto;
-    position: relative; /* Required for the search bar */
+    position: relative;
 }
 
 #search-bar {
@@ -46,7 +46,7 @@ main .container {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px; /* Rounded corners */
-    margin-bottom: 20px; /* Space between search bar and posts */
+    margin-bottom: 20px;
     font-size: 16px;
 }
 
@@ -75,6 +75,27 @@ main .container {
 
 .post .read-more:hover {
     text-decoration: underline;
+}
+
+#pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#pagination button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #007BFF;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#pagination button:disabled {
+    background: #aaa;
+    cursor: not-allowed;
 }
 
 footer {
