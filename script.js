@@ -41,12 +41,17 @@ document.addEventListener("DOMContentLoaded", function() {
             postTitle.className = 'post-title';
             postTitle.textContent = post.title;
 
-            const postSubjectClass = document.createElement('div');
-            postSubjectClass.className = 'post-subject-class';
-            postSubjectClass.innerHTML = `Subject: ${post.subject} &#8226; Class: ${post.class}`;
+            const postSubject = document.createElement('div');
+            postSubject.className = 'post-subject';
+            postSubject.textContent = `Subject: ${post.subject}`;
+
+            const postClass = document.createElement('div');
+            postClass.className = 'post-class';
+            postClass.textContent = `Class: ${post.class}`;
 
             postHeader.appendChild(postTitle);
-            postHeader.appendChild(postSubjectClass);
+            postHeader.appendChild(postSubject);
+            postHeader.appendChild(postClass);
 
             const postContentContainer = document.createElement('div');
             postContentContainer.className = 'post-content-container';
@@ -74,15 +79,15 @@ document.addEventListener("DOMContentLoaded", function() {
             postsContainer.appendChild(postElement);
         });
 
-        updateNavigation();
+        updatePagination();
     }
 
-    function updateNavigation() {
-        const prevButton = document.getElementById('prev-page');
-        const nextButton = document.getElementById('next-page');
+    function updatePagination() {
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
 
         prevButton.disabled = currentPage === 1;
-        nextButton.disabled = currentPage === Math.ceil(filteredPosts.length / postsPerPage);
+        nextButton.disabled = currentPage >= Math.ceil(filteredPosts.length / postsPerPage);
 
         prevButton.addEventListener('click', function() {
             if (currentPage > 1) {
@@ -117,24 +122,28 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function showProfileModal() {
-        const modal = document.getElementById('profile-modal');
-        modal.classList.add('show');
-        document.querySelector('.close').addEventListener('click', function() {
-            modal.classList.remove('show');
+        const profileModal = document.getElementById('profile-modal');
+        profileModal.classList.add('show');
+        document.querySelector('#profile-modal .close').addEventListener('click', function() {
+            profileModal.classList.remove('show');
         });
     }
 
     document.getElementById('profile-icon').addEventListener('click', showProfileModal);
 
-    document.getElementById('search-bar').addEventListener('input', function() {
-        const searchQuery = this.value.toLowerCase();
-        filteredPosts = posts.filter(post => 
-            post.title.toLowerCase().includes(searchQuery) ||
-            post.content.toLowerCase().includes(searchQuery)
-        );
+    function filterPosts() {
+        const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+
+        filteredPosts = posts.filter(post => {
+            const matchesSearch = post.title.toLowerCase().includes(searchQuery) ||
+                                  post.content.toLowerCase().includes(searchQuery);
+            return matchesSearch;
+        });
         currentPage = 1; // Reset to first page
         displayPosts();
-    });
+    }
+
+    document.getElementById('search-bar').addEventListener('input', filterPosts);
 
     // Fetch posts data from the JSON file
     fetch('storage/posts.json')
