@@ -25,6 +25,11 @@ document.addEventListener("DOMContentLoaded", function() {
         const end = start + postsPerPage;
         const currentPosts = filteredPosts.slice(start, end);
 
+        if (currentPosts.length === 0) {
+            postsContainer.innerHTML = '<p>No posts available.</p>';
+            return;
+        }
+
         currentPosts.forEach((post) => {
             const postElement = document.createElement('div');
             postElement.className = 'post';
@@ -139,7 +144,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Fetch posts data from the JSON file
     fetch('storage/posts.json')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             posts = data;
             filteredPosts = posts; // Initialize filteredPosts with all posts
