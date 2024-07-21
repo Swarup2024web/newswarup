@@ -26,7 +26,6 @@ header .container {
 
 header h1 {
     margin: 0;
-    font-size: 1.8em;
 }
 
 header nav {
@@ -34,15 +33,10 @@ header nav {
     align-items: center;
 }
 
-.header-profile {
-    cursor: pointer;
-    font-size: 1.5em;
+header nav i {
     color: white;
-    transition: color 0.3s ease;
-}
-
-.header-profile:hover {
-    color: #3498db;
+    font-size: 1.5em;
+    cursor: pointer;
 }
 
 /* Main container styling */
@@ -118,12 +112,11 @@ header nav {
 }
 
 .post-subject::after {
-    content: " • ";
-    margin: 0 0.5em;
+    content: ' • ';
 }
 
 .post-class {
-    margin-left: 0;
+    margin-left: 0.5em;
 }
 
 .post-content {
@@ -144,13 +137,13 @@ header nav {
 }
 
 /* Pagination styling */
-#navigation {
+#pagination {
     display: flex;
     justify-content: center;
     margin-top: 2em;
 }
 
-#navigation button {
+#pagination button {
     padding: 0.75em 1.5em;
     margin: 0.25em;
     border: none;
@@ -162,19 +155,13 @@ header nav {
     transition: background-color 0.3s ease;
 }
 
-#navigation button:hover {
+#pagination button:hover {
     background-color: #2980b9;
 }
 
-#navigation button:disabled {
+#pagination button:disabled {
     background-color: #bdc3c7;
     cursor: not-allowed;
-}
-
-#navigation .active {
-    background-color: #2980b9;
-    color: white;
-    border: 1px solid #2980b9;
 }
 
 /* Modal styling */
@@ -224,4 +211,4 @@ header nav {
 
 button:focus, .close:focus {
     outline: 3px solid #3498db;
-                               }
+}
