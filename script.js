@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             const postSubjectClass = document.createElement('div');
             postSubjectClass.className = 'post-subject-class';
-            postSubjectClass.textContent = `Subject: ${post.subject} • Class: ${post.class}`;
+            postSubjectClass.innerHTML = `Subject: ${post.subject} &#8226; Class: ${post.class}`;
 
             postHeader.appendChild(postTitle);
             postHeader.appendChild(postSubjectClass);
