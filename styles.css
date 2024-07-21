@@ -28,16 +28,20 @@ header h1 {
     margin: 0;
 }
 
-header nav a {
+header nav {
+    display: flex;
+    align-items: center;
+}
+
+.header-profile {
+    cursor: pointer;
+    font-size: 1.5em;
     color: white;
-    text-decoration: none;
-    margin: 0 0.5em;
-    font-weight: 500;
     transition: color 0.3s ease;
 }
 
-header nav a:hover {
-    text-decoration: underline;
+.header-profile:hover {
+    color: #3498db;
 }
 
 /* Main container styling */
@@ -111,11 +115,6 @@ header nav a:hover {
     margin-bottom: 0.5em;
 }
 
-.post-subject-class::before {
-    content: '•';
-    margin: 0 0.5em;
-}
-
 .post-content {
     font-size: 1em;
     line-height: 1.6;
@@ -140,7 +139,7 @@ header nav a:hover {
     margin-top: 2em;
 }
 
-.nav-button {
+#navigation button {
     padding: 0.75em 1.5em;
     margin: 0.25em;
     border: none;
@@ -152,8 +151,13 @@ header nav a:hover {
     transition: background-color 0.3s ease;
 }
 
-.nav-button:hover {
+#navigation button:hover {
     background-color: #2980b9;
+}
+
+#navigation button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
 }
 
 /* Modal styling */
@@ -205,37 +209,29 @@ button:focus, .close:focus {
     outline: 3px solid #3498db;
 }
 
-/* Responsive design */
+/* Responsive styling */
 @media (max-width: 768px) {
-    header .container {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    header nav {
-        margin-top: 1em;
-    }
-
     .search-container {
         flex-direction: column;
         align-items: stretch;
     }
 
     #search-bar {
+        width: 100%;
         margin-bottom: 1em;
     }
 
-    .post {
-        margin: 0.5em 0;
+    .post-header, .post-content-container {
+        padding: 0.5em;
     }
 
     #navigation {
         flex-direction: column;
-        align-items: center;
     }
+}
 
-    .nav-button {
-        width: 100%;
-        max-width: 200px;
+@media (max-width: 480px) {
+    .header-profile {
+        font-size: 1.2em;
     }
 }
