@@ -28,6 +28,9 @@ document.addEventListener("DOMContentLoaded", function() {
             const postElement = document.createElement('div');
             postElement.className = 'post';
 
+            const postHeader = document.createElement('div');
+            postHeader.className = 'post-header';
+
             const postTitle = document.createElement('div');
             postTitle.className = 'post-title';
             postTitle.textContent = post.title;
@@ -40,15 +43,22 @@ document.addEventListener("DOMContentLoaded", function() {
             postClass.className = 'post-class';
             postClass.textContent = `Class: ${post.class}`;
 
+            postHeader.appendChild(postTitle);
+            postHeader.appendChild(postSubject);
+            postHeader.appendChild(postClass);
+
+            const postContentContainer = document.createElement('div');
+            postContentContainer.className = 'post-content-container';
+
             const truncatedContent = truncateText(post.content, 30);
             const postContent = document.createElement('div');
             postContent.className = 'post-content';
             postContent.innerHTML = truncatedContent.truncated;
 
-            postElement.appendChild(postTitle);
-            postElement.appendChild(postSubject);
-            postElement.appendChild(postClass);
-            postElement.appendChild(postContent);
+            postContentContainer.appendChild(postContent);
+
+            postElement.appendChild(postHeader);
+            postElement.appendChild(postContentContainer);
 
             if (truncatedContent.isTruncated) {
                 const readMoreButton = document.createElement('span');
@@ -58,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 readMoreButton.addEventListener('click', function() {
                     showModal(post.content);
                 });
-                postElement.appendChild(readMoreButton);
+                postContentContainer.appendChild(readMoreButton);
             }
 
             postsContainer.appendChild(postElement);
@@ -100,15 +110,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    const fetchData = () => {
-        fetch('storage/posts.json')
-            .then(response => response.json())
-            .then(data => {
-                posts = data;
-                displayPosts();
-            })
-            .catch(error => console.error('Error fetching posts:', error));
-    }
-
-    fetchData();
+    // Fetch posts data from the JSON file
+    fetch('storage/posts.json')
+        .then(response => response.json())
+        .then(data => {
+            posts = data;
+            displayPosts();
+        })
+        .catch(error => console.error('Error fetching posts:', error));
 });
