@@ -91,6 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 pageButton.className = 'page-button';
                 if (i === currentPage) {
                     pageButton.classList.add('active');
+                    pageButton.disabled = true;
                 }
                 pageButton.addEventListener('click', function() {
                     currentPage = i;
@@ -119,18 +120,25 @@ document.addEventListener("DOMContentLoaded", function() {
         };
     }
 
-    function filterPosts(query) {
-        filteredPosts = posts.filter(post => 
-            post.title.toLowerCase().includes(query.toLowerCase()) || 
-            post.content.toLowerCase().includes(query.toLowerCase())
-        );
+    function filterPosts() {
+        const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+        const selectedSubject = document.getElementById('filter-subject').value;
+        const selectedClass = document.getElementById('filter-class').value;
+
+        filteredPosts = posts.filter(post => {
+            const matchesSearch = post.title.toLowerCase().includes(searchQuery) ||
+                                  post.content.toLowerCase().includes(searchQuery);
+            const matchesSubject = selectedSubject === '' || post.subject === selectedSubject;
+            const matchesClass = selectedClass === '' || post.class === selectedClass;
+            return matchesSearch && matchesSubject && matchesClass;
+        });
         currentPage = 1; // Reset to first page
         displayPosts();
     }
 
-    document.getElementById('search-bar').addEventListener('input', function(event) {
-        filterPosts(event.target.value);
-    });
+    document.getElementById('search-bar').addEventListener('input', filterPosts);
+    document.getElementById('filter-subject').addEventListener('change', filterPosts);
+    document.getElementById('filter-class').addEventListener('change', filterPosts);
 
     // Fetch posts data from the JSON file
     fetch('storage/posts.json')
