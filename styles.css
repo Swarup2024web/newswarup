@@ -24,6 +24,10 @@ header .container {
     padding: 0 1em;
 }
 
+header h1 {
+    margin: 0;
+}
+
 header nav a {
     color: white;
     text-decoration: none;
@@ -68,6 +72,25 @@ header nav a:hover {
     right: 1em;
     color: #888;
     font-size: 1.2em;
+}
+
+/* Filters styling */
+.filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2em;
+}
+
+.filters label {
+    margin-right: 0.5em;
+    font-weight: 500;
+}
+
+.filters select {
+    padding: 0.5em;
+    border-radius: 0.3em;
+    border: 1px solid #ddd;
+    font-size: 1em;
 }
 
 /* Post styling */
@@ -181,6 +204,12 @@ header nav a:hover {
     max-width: 800px;
     border-radius: 0.5em;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(-30px);
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
 }
 
 .close {
@@ -196,3 +225,7 @@ header nav a:hover {
     text-decoration: none;
     cursor: pointer;
 }
+
+button:focus, .close:focus {
+    outline: 3px solid #3498db;
+    }
