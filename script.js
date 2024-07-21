@@ -25,14 +25,20 @@ document.addEventListener("DOMContentLoaded", function() {
         const end = start + postsPerPage;
         const currentPosts = filteredPosts.slice(start, end);
 
-        currentPosts.forEach((post, index) => {
+        if (currentPosts.length === 0) {
+            postsContainer.innerHTML = '<p>No posts found.</p>';
+            updatePagination();
+            return;
+        }
+
+        currentPosts.forEach(post => {
             const postElement = document.createElement('div');
             postElement.className = 'post';
 
             const postHeader = document.createElement('div');
             postHeader.className = 'post-header';
 
-            const postTitle = document.createElement('div');
+            const postTitle = document.createElement('h2');
             postTitle.className = 'post-title';
             postTitle.textContent = post.title;
 
@@ -48,29 +54,28 @@ document.addEventListener("DOMContentLoaded", function() {
             postHeader.appendChild(postSubject);
             postHeader.appendChild(postClass);
 
-            const postContentContainer = document.createElement('div');
-            postContentContainer.className = 'post-content-container';
-
-            const truncatedContent = truncateText(post.content, 30);
             const postContent = document.createElement('div');
-            postContent.className = 'post-content';
-            postContent.innerHTML = truncatedContent.truncated;
+            postContent.className = 'post-content-container';
 
-            postContentContainer.appendChild(postContent);
+            const { truncated, isTruncated } = truncateText(post.content, 30);
+            const postContentText = document.createElement('p');
+            postContentText.className = 'post-content';
+            postContentText.textContent = truncated;
+
+            const readMoreLink = document.createElement('span');
+            readMoreLink.className = 'read-more';
+            if (isTruncated) {
+                readMoreLink.textContent = 'Read More';
+                readMoreLink.addEventListener('click', function() {
+                    showModal(post);
+                });
+            }
+
+            postContent.appendChild(postContentText);
+            postContent.appendChild(readMoreLink);
 
             postElement.appendChild(postHeader);
-            postElement.appendChild(postContentContainer);
-
-            if (truncatedContent.isTruncated) {
-                const readMoreButton = document.createElement('span');
-                readMoreButton.className = 'read-more';
-                readMoreButton.textContent = 'Read more';
-                readMoreButton.setAttribute('data-index', start + index);
-                readMoreButton.addEventListener('click', function() {
-                    showModal(post.content);
-                });
-                postContentContainer.appendChild(readMoreButton);
-            }
+            postElement.appendChild(postContent);
 
             postsContainer.appendChild(postElement);
         });
@@ -79,74 +84,75 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function updatePagination() {
-        const paginationContainer = document.getElementById('pagination');
-        paginationContainer.innerHTML = '';
-
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
         const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
-        if (totalPages > 1) {
-            for (let i = 1; i <= totalPages; i++) {
-                const pageButton = document.createElement('button');
-                pageButton.textContent = i;
-                pageButton.className = 'page-button';
-                if (i === currentPage) {
-                    pageButton.classList.add('active');
-                    pageButton.disabled = true;
-                }
-                pageButton.addEventListener('click', function() {
-                    currentPage = i;
-                    displayPosts();
-                });
-                paginationContainer.appendChild(pageButton);
-            }
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.textContent = i;
+            button.className = i === currentPage ? 'active' : '';
+            button.addEventListener('click', function() {
+                currentPage = i;
+                displayPosts();
+            });
+            pagination.appendChild(button);
         }
     }
 
-    function showModal(content) {
+    function showModal(post) {
         const modal = document.getElementById('post-modal');
         const modalContent = document.getElementById('modal-post-content');
-        modalContent.innerHTML = content;
-        modal.style.display = "block";
 
-        const closeModal = document.getElementsByClassName('close')[0];
-        closeModal.onclick = function() {
-            modal.style.display = "none";
-        };
+        modalContent.innerHTML = `
+            <h2>${post.title}</h2>
+            <p><strong>Subject:</strong> ${post.subject}</p>
+            <p><strong>Class:</strong> ${post.class}</p>
+            <p>${post.content}</p>
+        `;
 
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        };
+        modal.classList.add('show');
+        document.querySelector('.close').addEventListener('click', function() {
+            modal.classList.remove('show');
+        });
     }
 
-    function filterPosts() {
-        const searchQuery = document.getElementById('search-bar').value.toLowerCase();
-        const selectedSubject = document.getElementById('filter-subject').value;
-        const selectedClass = document.getElementById('filter-class').value;
-
-        filteredPosts = posts.filter(post => {
-            const matchesSearch = post.title.toLowerCase().includes(searchQuery) ||
-                                  post.content.toLowerCase().includes(searchQuery);
-            const matchesSubject = selectedSubject === '' || post.subject === selectedSubject;
-            const matchesClass = selectedClass === '' || post.class === selectedClass;
-            return matchesSearch && matchesSubject && matchesClass;
-        });
-        currentPage = 1; // Reset to first page
+    function fetchPosts() {
+        // Replace with actual API call or data fetching logic
+        posts = [
+            // Example post objects
+            { title: 'Post 1', subject: 'Math', class: '10', content: 'Lorem ipsum dolor sit amet...' },
+            { title: 'Post 2', subject: 'Science', class: '12', content: 'Consectetur adipiscing elit...' },
+            // Add more posts here
+        ];
+        filteredPosts = posts;
         displayPosts();
     }
 
-    document.getElementById('search-bar').addEventListener('input', filterPosts);
-    document.getElementById('filter-subject').addEventListener('change', filterPosts);
-    document.getElementById('filter-class').addEventListener('change', filterPosts);
+    function setupFilters() {
+        const subjectFilter = document.getElementById('filter-subject');
+        const classFilter = document.getElementById('filter-class');
 
-    // Fetch posts data from the JSON file
-    fetch('storage/posts.json')
-        .then(response => response.json())
-        .then(data => {
-            posts = data;
-            filteredPosts = posts; // Initialize filteredPosts with all posts
-            displayPosts();
-        })
-        .catch(error => console.error('Error fetching posts:', error));
+        subjectFilter.addEventListener('change', function() {
+            const subject = this.value;
+            filterPosts(subject, classFilter.value);
+        });
+
+        classFilter.addEventListener('change', function() {
+            const classValue = this.value;
+            filterPosts(subjectFilter.value, classValue);
+        });
+    }
+
+    function filterPosts(subject, classValue) {
+        filteredPosts = posts.filter(post => {
+            return (subject === '' || post.subject === subject) &&
+                   (classValue === '' || post.class === classValue);
+        });
+        currentPage = 1;
+        displayPosts();
+    }
+
+    fetchPosts();
+    setupFilters();
 });
