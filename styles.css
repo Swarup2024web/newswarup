@@ -1,8 +1,12 @@
+/* General styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensures the body takes up full viewport height */
 }
 
 header {
@@ -31,6 +35,10 @@ header nav a {
 
 header nav a:hover {
     text-decoration: underline;
+}
+
+main {
+    flex: 1; /* Allows the main content to expand and push the footer down */
 }
 
 main .container {
@@ -70,9 +78,5 @@ footer {
     color: #fff;
     padding: 1em 0;
     text-align: center;
-}
-
-footer .container {
-    width: 80%;
-    margin: 0 auto;
+    margin-top: auto; /* Pushes the footer to the bottom */
 }
