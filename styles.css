@@ -1,137 +1,117 @@
-/* General styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
 }
 
 header {
-    background: #333;
-    color: #fff;
+    background-color: #333;
+    color: white;
     padding: 1em 0;
 }
 
 header .container {
-    width: 100%;
-    max-width: 1200px; /* Maximum width for larger screens */
-    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px; /* Padding to ensure space on smaller screens */
-    box-sizing: border-box; /* Include padding in width calculation */
-}
-
-header h1 {
-    margin: 0;
-    font-size: 1.5em; /* Adjust font size as needed */
-    white-space: nowrap; /* Prevent text from wrapping */
-}
-
-header nav {
-    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1em;
 }
 
 header nav a {
-    color: #fff;
+    color: white;
     text-decoration: none;
-    margin-left: 15px;
-    font-size: 1em; /* Adjust font size as needed */
+    margin: 0 0.5em;
 }
 
 header nav a:hover {
     text-decoration: underline;
 }
 
-main .container {
-    width: 100%;
+.container {
     max-width: 1200px;
-    margin: 20px auto;
-    position: relative;
-    padding: 0 20px; /* Padding to ensure space on smaller screens */
-    box-sizing: border-box;
+    margin: 2em auto;
+    padding: 0 1em;
 }
 
 #search-bar {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 16px;
+    padding: 0.5em;
+    border-radius: 1em;
+    border: 1px solid #ccc;
+    margin-bottom: 2em;
 }
 
 .post {
-    background: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    padding: 1em;
+    margin-bottom: 1em;
+    border-radius: 0.5em;
 }
 
-.post h2 {
-    margin-top: 0;
+.post-title {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
 }
 
-.post .date {
-    color: #888;
-    font-size: 0.9em;
+.post-subject, .post-class {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 0.5em;
 }
 
-.post .read-more {
-    color: #007BFF;
-    text-decoration: none;
-    font-weight: bold;
+.post-content {
+    font-size: 1em;
+}
+
+.read-more {
+    color: blue;
     cursor: pointer;
-}
-
-.post .read-more:hover {
-    text-decoration: underline;
 }
 
 #pagination {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    justify-content: center;
+    margin-top: 2em;
 }
 
 #pagination button {
-    padding: 10px 20px;
+    padding: 0.5em 1em;
+    margin: 0 0.5em;
     border: none;
-    border-radius: 5px;
-    background: #007BFF;
-    color: #fff;
-    font-size: 16px;
+    background-color: #333;
+    color: white;
+    border-radius: 0.5em;
     cursor: pointer;
 }
 
 #pagination button:disabled {
-    background: #aaa;
+    background-color: #ccc;
     cursor: not-allowed;
 }
 
-/* Modal styles */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    display: none;
+    position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 5% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-    border-radius: 8px;
+    width: 80%;
+    border-radius: 0.5em;
 }
 
 .close {
@@ -141,8 +121,7 @@ main .container {
     font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.close:hover, .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
