@@ -88,5 +88,11 @@
         "subject": "English",
         "class": 8,
         "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 15"
+    },
+    {
+        "title": "Post 15",
+        "subject": "English",
+        "class": 8,
+        "content": "The body style sets up basic styling for font and layout.The .filters class uses Flexbox to position the filters side by side and includes padding and background color for better visual separation.Each .filter has some margin to space them out and ensures that the select elements are responsive and user-friendly with padding and border radius for styling. This is a sample answer content with exactly twenty words for the purpose of this example. Post number 15"
     }
 ]
