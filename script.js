@@ -1,16 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const readMoreLinks = document.querySelectorAll('.read-more');
+    const url = 'https://swarup2024web.github.io/newswarup/storage/posts.json'; // Replace with your actual URL
 
-    readMoreLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const post = link.parentElement;
-            post.classList.toggle('expanded');
-            if (post.classList.contains('expanded')) {
-                link.textContent = 'Read Less';
-            } else {
-                link.textContent = 'Read More';
-            }
-        });
-    });
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('posts-container');
+            data.forEach(post => {
+                const article = document.createElement('article');
+                article.className = 'post';
+                article.innerHTML = `
+                    <h2>${post.title}</h2>
+                    <p class="date">${post.date}</p>
+                    <p>${post.content}</p>
+                    <a href="${post.url}" class="read-more">Read More</a>
+                `;
+                container.appendChild(article);
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
 });
