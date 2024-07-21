@@ -1,17 +1,92 @@
 [
     {
-        "title": "Exploring the Future of Technology",
-        "date": "July 21, 2024",
-        "content": "Technology is evolving at an unprecedented rate, transforming every aspect of our lives. From artificial intelligence and machine learning to quantum computing and blockchain, the innovations emerging today are paving the way for a future that is both exciting and challenging. Artificial intelligence, in particular, is reshaping industries by automating tasks, improving efficiency, and creating new opportunities. Machine learning algorithms are becoming increasingly sophisticated, enabling computers to learn from data and make predictions with remarkable accuracy. Quantum computing, though still in its infancy, holds the promise of solving complex problems that are currently beyond the reach of classical computers. Meanwhile, blockchain technology is revolutionizing the way we think about security and transparency. As we look ahead, it's clear that technology will continue to play a crucial role in shaping the future, driving progress, and addressing some of the most pressing challenges facing humanity."
+        "title": "Post 1",
+        "subject": "Geography",
+        "class": 7,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 1"
     },
     {
-        "title": "The Impact of Climate Change on Global Ecosystems",
-        "date": "July 22, 2024",
-        "content": "Climate change is one of the most pressing issues of our time, with far-reaching effects on global ecosystems. Rising temperatures, shifting weather patterns, and increasing levels of carbon dioxide are disrupting the delicate balance of natural systems. One significant impact of climate change is the alteration of habitats, which affects biodiversity and the survival of many species. For instance, polar ice melt is threatening polar bears and other Arctic wildlife, while rising sea levels endanger coastal ecosystems and communities. Additionally, changes in temperature and precipitation patterns are affecting the distribution and behavior of plant and animal species. As ecosystems adapt to these changes, some species may thrive, while others face extinction. Addressing climate change requires concerted global efforts to reduce greenhouse gas emissions, protect natural habitats, and promote sustainable practices to mitigate the impact on our planet's ecosystems."
+        "title": "Post 2",
+        "subject": "Math",
+        "class": 4,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 2"
     },
     {
-        "title": "Healthy Eating Habits for a Better Life",
-        "date": "July 23, 2024",
-        "content": "Adopting healthy eating habits is essential for maintaining overall well-being and preventing chronic diseases. A balanced diet that includes a variety of nutrient-rich foods can help improve energy levels, support optimal body function, and reduce the risk of conditions such as heart disease, diabetes, and obesity. Incorporating a wide range of fruits and vegetables into your meals provides essential vitamins, minerals, and antioxidants that support immune function and overall health. Whole grains, lean proteins, and healthy fats should also be included in your diet to ensure you get the right balance of nutrients. Additionally, staying hydrated by drinking plenty of water and limiting the consumption of sugary and processed foods can contribute to a healthier lifestyle. By making mindful food choices and practicing portion control, you can enjoy the benefits of a well-balanced diet and enhance your quality of life."
+        "title": "Post 3",
+        "subject": "Science",
+        "class": 8,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 3"
+    },
+    {
+        "title": "Post 4",
+        "subject": "Geography",
+        "class": 9,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 4"
+    },
+    {
+        "title": "Post 5",
+        "subject": "English",
+        "class": 7,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 5"
+    },
+    {
+        "title": "Post 6",
+        "subject": "Science",
+        "class": 5,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 6"
+    },
+    {
+        "title": "Post 7",
+        "subject": "Math",
+        "class": 7,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 7"
+    },
+    {
+        "title": "Post 8",
+        "subject": "History",
+        "class": 8,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 8"
+    },
+    {
+        "title": "Post 9",
+        "subject": "Math",
+        "class": 6,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 9"
+    },
+    {
+        "title": "Post 10",
+        "subject": "History",
+        "class": 4,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 10"
+    },
+    {
+        "title": "Post 11",
+        "subject": "English",
+        "class": 6,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 11"
+    },
+    {
+        "title": "Post 12",
+        "subject": "Math",
+        "class": 8,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 12"
+    },
+    {
+        "title": "Post 13",
+        "subject": "History",
+        "class": 5,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 13"
+    },
+    {
+        "title": "Post 14",
+        "subject": "History",
+        "class": 4,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 14"
+    },
+    {
+        "title": "Post 15",
+        "subject": "English",
+        "class": 8,
+        "content": "This is a sample answer content with exactly twenty words for the purpose of this example. Post number 15"
     }
 ]
