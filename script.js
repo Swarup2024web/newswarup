@@ -41,9 +41,6 @@ document.addEventListener("DOMContentLoaded", function() {
             postTitle.className = 'post-title';
             postTitle.textContent = post.title;
 
-            const postSubjectClass = document.createElement('div');
-            postSubjectClass.className = 'post-subject-class';
-
             const postSubject = document.createElement('div');
             postSubject.className = 'post-subject';
             postSubject.textContent = `Subject: ${post.subject}`;
@@ -52,12 +49,9 @@ document.addEventListener("DOMContentLoaded", function() {
             postClass.className = 'post-class';
             postClass.textContent = `Class: ${post.class}`;
 
-            postSubjectClass.appendChild(postSubject);
-            postSubjectClass.appendChild(document.createTextNode(' • '));
-            postSubjectClass.appendChild(postClass);
-
             postHeader.appendChild(postTitle);
-            postHeader.appendChild(postSubjectClass);
+            postHeader.appendChild(postSubject);
+            postHeader.appendChild(postClass);
 
             const postContentContainer = document.createElement('div');
             postContentContainer.className = 'post-content-container';
@@ -78,6 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             postContentContainer.appendChild(postContent);
             postContentContainer.appendChild(readMoreLink);
+
             postElement.appendChild(postHeader);
             postElement.appendChild(postContentContainer);
 
@@ -92,24 +87,45 @@ document.addEventListener("DOMContentLoaded", function() {
         pagination.innerHTML = '';
         const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
+        if (totalPages <= 1) return; // No need for pagination if there's only one page
+
+        const prevButton = document.createElement('button');
+        prevButton.textContent = 'Previous';
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                displayPosts();
+            }
+        });
+        pagination.appendChild(prevButton);
+
         for (let i = 1; i <= totalPages; i++) {
             const button = document.createElement('button');
             button.textContent = i;
-            if (i === currentPage) {
-                button.disabled = true;
-                button.classList.add('active');
-            }
+            button.className = i === currentPage ? 'active' : '';
             button.addEventListener('click', function() {
                 currentPage = i;
                 displayPosts();
             });
             pagination.appendChild(button);
         }
+
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'Next';
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayPosts();
+            }
+        });
+        pagination.appendChild(nextButton);
     }
 
     function showModal(post) {
-        const modal = document.getElementById('post-modal');
-        const modalContent = document.getElementById('modal-post-content');
+        const modal = document.getElementById('profile-modal');
+        const modalContent = document.querySelector('#profile-modal .modal-content');
 
         modalContent.innerHTML = `
             <h2>${post.title}</h2>
@@ -119,36 +135,23 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
 
         modal.classList.add('show');
-        document.querySelector('.close').addEventListener('click', function() {
-            modal.classList.remove('show');
+    }
+
+    function hideModal() {
+        const modal = document.getElementById('profile-modal');
+        modal.classList.remove('show');
+    }
+
+    document.getElementById('profile-icon').addEventListener('click', function() {
+        showModal({
+            title: "Random Header",
+            subject: "Random Subject",
+            class: "Random Class",
+            content: "This is some random text to show in the modal popup. You can replace this with any information you like."
         });
-    }
+    });
 
-    function filterPosts() {
-        const searchQuery = document.getElementById('search-bar').value.toLowerCase();
-        const selectedSubject = document.getElementById('filter-subject').value;
-        const selectedClass = document.getElementById('filter-class').value;
-
-        filteredPosts = posts.filter(post => {
-            const matchesSearch = post.title.toLowerCase().includes(searchQuery) ||
-                                  post.content.toLowerCase().includes(searchQuery);
-            const matchesSubject = selectedSubject === '' || post.subject === selectedSubject;
-            const matchesClass = selectedClass === '' || post.class === selectedClass;
-            return matchesSearch && matchesSubject && matchesClass;
-        });
-        currentPage = 1; // Reset to first page
-        displayPosts();
-    }
-
-    function setupFilters() {
-        const subjectFilter = document.getElementById('filter-subject');
-        const classFilter = document.getElementById('filter-class');
-
-        subjectFilter.addEventListener('change', filterPosts);
-        classFilter.addEventListener('change', filterPosts);
-    }
-
-    document.getElementById('search-bar').addEventListener('input', filterPosts);
+    document.getElementById('profile-close').addEventListener('click', hideModal);
 
     // Fetch posts data from the JSON file
     fetch('storage/posts.json')
@@ -164,25 +167,4 @@ document.addEventListener("DOMContentLoaded", function() {
             displayPosts();
         })
         .catch(error => console.error('Error fetching posts:', error));
-
-    setupFilters();
-
-    // Profile icon modal
-    const profileIcon = document.getElementById('profile-icon');
-    const profileModal = document.getElementById('profile-modal');
-    const profileClose = document.getElementById('profile-close');
-
-    profileIcon.addEventListener('click', function() {
-        profileModal.classList.add('show');
-    });
-
-    profileClose.addEventListener('click', function() {
-        profileModal.classList.remove('show');
-    });
-
-    window.addEventListener('click', function(event) {
-        if (event.target === profileModal) {
-            profileModal.classList.remove('show');
-        }
-    });
 });
