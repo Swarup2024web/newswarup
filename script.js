@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
         for (let i = 1; i <= totalPages; i++) {
             let pageButton = document.createElement("button");
             pageButton.innerText = i;
+            pageButton.classList.toggle("active", i === page);
             pageButton.onclick = () => fetchPosts(i);
             pagination.appendChild(pageButton);
         }
