@@ -87,3 +87,21 @@ main {
     text-decoration: none;
     cursor: pointer;
 }
+
+#pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#pagination button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+#pagination button.active {
+    background-color: #555;
+}
